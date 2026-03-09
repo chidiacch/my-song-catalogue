@@ -124,15 +124,14 @@ container.innerHTML += html;
 
 function limitPreview(player){
 
-let previewLimit = 30; // seconds
+let previewLimit = 60; // seconds
 
 if(player.currentTime > previewLimit){
 
 player.pause();
 player.currentTime = 0;
 
-alert("Preview finished. Contact to buy the full song.");
-
+alert("Preview ended. Buy the full song to unlock the complete track.");
 }
 
 }

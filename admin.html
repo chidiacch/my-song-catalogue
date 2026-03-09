@@ -77,6 +77,14 @@ margin-top:20px;
 
 let songs = [];
 
+fetch("songs.json")
+.then(response => response.json())
+.then(data => {
+songs = data.songs;
+renderSongs();
+generateJSON();
+});
+
 function addSong(){
 
 let song = {
@@ -88,7 +96,11 @@ demo: document.getElementById("demo").value
 };
 
 songs.push(song);
-
+document.getElementById("title").value="";
+document.getElementById("style").value="";
+document.getElementById("mood").value="";
+document.getElementById("price").value="";
+document.getElementById("demo").value="";
 renderSongs();
 generateJSON();
 
@@ -99,19 +111,30 @@ function renderSongs(){
 let container = document.getElementById("songList");
 container.innerHTML = "";
 
-songs.forEach(song =>{
+songs.forEach((song,index)=>{
 
 container.innerHTML += `
 <div class="song">
 <b>${song.title}</b><br>
 ${song.style} • ${song.mood}
+
+<br><br>
+
+<button onclick="deleteSong(${index})">Delete</button>
+
 </div>
 `;
 
 });
+}
+function deleteSong(index){
+
+songs.splice(index,1);
+
+renderSongs();
+generateJSON();
 
 }
-
 function generateJSON(){
 
 let json = {
