@@ -1,11 +1,18 @@
 {
   "songs": [
     {
-      "title": "MA TEHKALOU LAL HAM",
-      "style": "TARAB CHAABE",
+      "title": "3ach bkhelwi ma3 allah",
+      "style": "taratil",
+      "mood": "soft",
+      "price": "350$",
+      "demo": "3achbkhelwi-demo.mp3"
+    },
+    {
+      "title": "Ma Tehkalou Lal Ham",
+      "style": "Tarab Chaabe",
       "mood": "",
-      "price": "300$",
-      "demo": "songs/matehkaloulalham-demo.mp3"
+      "price": "350$",
+      "demo": "matehkaloulalham-demo.mp3"
     }
   ]
 }
