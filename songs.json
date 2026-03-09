@@ -16,16 +16,14 @@
 "price":"$220 Exclusive",
 "demo":"songs/baadakfik-demo.mp3"
 },
+
 {
-  "songs": [
-    {
-      "title": "MA TEHKALOU LAL HAM",
-      "style": "CHAABE",
-      "mood": "",
-      "price": "300$",
-      "demo": "MA TEHKALOU-LALHAM-DEMO.MP3"
-    }
-  ]
+"title":"MA TEHKALOU LAL HAM",
+"style":"Chaabe",
+"mood":"Emotional",
+"price":"$300",
+"demo":"songs/matehkaloulalham-demo.mp3"
 }
 
-
+]
+}
