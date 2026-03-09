@@ -1,14 +1,11 @@
 {
-"songs":[
-
-{
-"title":"MA TEHKALOU LAL HAM",
-"style":"Chaabe",
-"mood":"Emotional",
-"price":"$300",
-"demo":"songs/matehkaloulalham-demo.mp3"
-}
-
-]
-
+  "songs": [
+    {
+      "title": "MA TEHKALOU LAL HAM",
+      "style": "TARAB CHAABE",
+      "mood": "",
+      "price": "300$",
+      "demo": "matehkaloulalham-demo.mp3"
+    }
+  ]
 }
