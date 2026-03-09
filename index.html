@@ -70,7 +70,7 @@ margin-top:10px;
 
 </head>
 
-<body>
+<body oncontextmenu="return false">
 
 <header>
 🎵 Charbel Song Catalog
@@ -101,8 +101,7 @@ const html = `
 <p><b>Mood:</b> ${song.mood}</p>
 <p><b>Price:</b> ${song.price}</p>
 
-<audio controls>
-<source src="${song.demo}" type="audio/mpeg">
+<audio controls controlsList="nodownload" ontimeupdate="limitPreview(this)"><source src="${song.demo}" type="audio/mpeg">
 </audio>
 
 <br><br>
@@ -119,6 +118,24 @@ container.innerHTML += html;
 });
 
 });
+
+</script>
+<script>
+
+function limitPreview(player){
+
+let previewLimit = 30; // seconds
+
+if(player.currentTime > previewLimit){
+
+player.pause();
+player.currentTime = 0;
+
+alert("Preview finished. Contact to buy the full song.");
+
+}
+
+}
 
 </script>
 
