@@ -5,14 +5,14 @@
       "style": "taratil",
       "mood": "soft",
       "price": "350$",
-      "demo": "3achbkhelwi-demo.mp3"
+      "demo": "songs/3achbkhelwi-demo.mp3"
     },
     {
       "title": "Ma Tehkalou Lal Ham",
       "style": "Tarab Chaabe",
       "mood": "",
       "price": "350$",
-      "demo": "matehkaloulalham-demo.mp3"
+      "demo": "songs/matehkaloulalham-demo.mp3"
     }
   ]
 }
