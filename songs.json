@@ -1,0 +1,31 @@
+{
+"songs":[
+
+{
+"title":"Ya Rouhi",
+"style":"Lebanese Pop",
+"mood":"Romantic",
+"price":"$250 Exclusive",
+"demo":"songs/yarouhi-demo.mp3"
+},
+
+{
+"title":"Baadak Fik",
+"style":"Sad Ballad",
+"mood":"Emotional",
+"price":"$220 Exclusive",
+"demo":"songs/baadakfik-demo.mp3"
+},
+{
+  "songs": [
+    {
+      "title": "MA TEHKALOU LAL HAM",
+      "style": "CHAABE",
+      "mood": "",
+      "price": "300$",
+      "demo": "MA TEHKALOU-LALHAM-DEMO.MP3"
+    }
+  ]
+}
+
+

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="UTF-8">
+<title>Song Admin Panel</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#111;
+color:white;
+padding:40px;
+}
+
+input{
+width:100%;
+padding:10px;
+margin:8px 0;
+border-radius:5px;
+border:none;
+}
+
+button{
+padding:10px 20px;
+background:#25D366;
+border:none;
+color:white;
+font-weight:bold;
+cursor:pointer;
+margin-top:10px;
+}
+
+.song{
+background:#1c1c1c;
+padding:15px;
+margin-top:10px;
+border-radius:8px;
+}
+
+textarea{
+width:100%;
+height:200px;
+margin-top:20px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>🎵 Song Admin Panel</h1>
+
+<h3>Add New Song</h3>
+
+<input id="title" placeholder="Song Title">
+<input id="style" placeholder="Style (Pop / Tarab)">
+<input id="mood" placeholder="Mood">
+<input id="price" placeholder="Price">
+<input id="demo" placeholder="Demo File (example: songs/song-demo.mp3)">
+
+<button onclick="addSong()">Add Song</button>
+
+<h3>Song List</h3>
+
+<div id="songList"></div>
+
+<h3>Generated songs.json</h3>
+
+<textarea id="jsonOutput"></textarea>
+
+<button onclick="downloadJSON()">Download songs.json</button>
+
+<script>
+
+let songs = [];
+
+function addSong(){
+
+let song = {
+title: document.getElementById("title").value,
+style: document.getElementById("style").value,
+mood: document.getElementById("mood").value,
+price: document.getElementById("price").value,
+demo: document.getElementById("demo").value
+};
+
+songs.push(song);
+
+renderSongs();
+generateJSON();
+
+}
+
+function renderSongs(){
+
+let container = document.getElementById("songList");
+container.innerHTML = "";
+
+songs.forEach(song =>{
+
+container.innerHTML += `
+<div class="song">
+<b>${song.title}</b><br>
+${song.style} • ${song.mood}
+</div>
+`;
+
+});
+
+}
+
+function generateJSON(){
+
+let json = {
+songs:songs
+};
+
+document.getElementById("jsonOutput").value =
+JSON.stringify(json,null,2);
+
+}
+
+function downloadJSON(){
+
+let data = document.getElementById("jsonOutput").value;
+
+let blob = new Blob([data], {type:"application/json"});
+
+let a = document.createElement("a");
+a.href = URL.createObjectURL(blob);
+a.download = "songs.json";
+a.click();
+
+}
+
+</script>
+
+</body>
+</html>
