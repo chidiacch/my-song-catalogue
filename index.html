@@ -27,7 +27,20 @@ border-bottom:2px solid #333;
 text-align:center;
 color:#aaa;
 margin-top:-10px;
-margin-bottom:30px;
+margin-bottom:20px;
+}
+
+.searchBox{
+text-align:center;
+margin-bottom:20px;
+}
+
+.searchBox input,
+.searchBox select{
+padding:10px;
+border-radius:6px;
+border:none;
+margin:5px;
 }
 
 .container{
@@ -59,11 +72,25 @@ font-size:16px;
 cursor:pointer;
 border-radius:30px;
 font-weight:bold;
+margin-top:10px;
 }
 
 audio{
 width:100%;
 margin-top:10px;
+}
+
+#lyricsModal{
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.9);
+color:white;
+padding:40px;
+overflow:auto;
 }
 
 </style>
@@ -80,20 +107,46 @@ margin-top:10px;
 Arabic Songwriter • Lebanese Pop • Tarab • Ballads
 </p>
 
+<div class="searchBox">
+
+<input id="searchBox" placeholder="Search song...">
+
+<select id="styleFilter">
+<option value="">All Styles</option>
+<option value="Tarab">Tarab</option>
+<option value="Pop">Pop</option>
+<option value="Chaabe">Chaabe</option>
+</select>
+
+</div>
+
 <div class="container" id="songList"></div>
 
 <script>
 
+let allSongs=[];
+
 fetch("songs.json")
-.then(response => response.json())
-.then(data => {
+.then(res=>res.json())
+.then(data=>{
+allSongs=data.songs;
+displaySongs(allSongs);
+});
 
-const container = document.getElementById("songList");
+function displaySongs(songs){
 
-data.songs.forEach(song => {
+const container=document.getElementById("songList");
+container.innerHTML="";
+
+songs.forEach(song=>{
+
+const cover = song.cover ? song.cover : "covers/default.jpg";
 
 const html = `
 <div class="song">
+
+<img src="${cover}" 
+style="width:100%;border-radius:10px;margin-bottom:10px;">
 
 <h2>${song.title}</h2>
 
@@ -101,42 +154,121 @@ const html = `
 <p><b>Mood:</b> ${song.mood}</p>
 <p><b>Price:</b> ${song.price}</p>
 
-<audio controls controlsList="nodownload" ontimeupdate="limitPreview(this)"><source src="${song.demo}" type="audio/mpeg">
+<audio class="player"
+controls controlsList="nodownload"
+ontimeupdate="limitPreview(this)">
+<source src="${song.demo}" type="audio/mpeg">
 </audio>
 
-<br><br>
+<br>
+
+<button onclick="showLyrics('${song.title}','${song.lyrics || ""}')">
+View Lyrics
+</button>
+
+<br>
 
 <a href="https://wa.me/96170333029?text=Hello I want to buy the song ${song.title}">
 <button>Buy / Contact</button>
 </a>
 
 </div>
+
 `;
+container.innerHTML+=html;
 
-container.innerHTML += html;
+});
+
+}
+
+document.getElementById("searchBox").addEventListener("input",filterSongs);
+document.getElementById("styleFilter").addEventListener("change",filterSongs);
+
+function filterSongs(){
+
+let search=document.getElementById("searchBox").value.toLowerCase();
+let style=document.getElementById("styleFilter").value;
+
+let filtered=allSongs.filter(song=>{
+
+let matchTitle=song.title.toLowerCase().includes(search);
+let matchStyle=!style || song.style.includes(style);
+
+return matchTitle && matchStyle;
 
 });
 
-});
+displaySongs(filtered);
+
+}
+
+function limitPreview(player){
+
+let previewLimit=60;
+
+if(player.currentTime>previewLimit){
+
+player.pause();
+player.currentTime=0;
+
+alert("Preview ended. Contact to buy the full song.");
+
+}
+
+}
+
+</script>
+
+<div id="lyricsModal">
+
+<h2 id="lyricsTitle"></h2>
+
+<p id="lyricsText"></p>
+
+<button onclick="closeLyrics()">Close</button>
+
+</div>
+
+<script>
+
+function showLyrics(title,lyrics){
+
+document.getElementById("lyricsModal").style.display="block";
+document.getElementById("lyricsTitle").innerText=title;
+document.getElementById("lyricsText").innerText=lyrics || "Lyrics not available";
+
+}
+
+function closeLyrics(){
+
+document.getElementById("lyricsModal").style.display="none";
+
+}
 
 </script>
 <script>
 
-function limitPreview(player){
+let players=[];
 
-let previewLimit = 60; // seconds
+document.addEventListener("DOMContentLoaded",()=>{
 
-if(player.currentTime > previewLimit){
+const players=document.querySelectorAll(".player");
 
-player.pause();
-player.currentTime = 0;
+players.forEach((player,index)=>{
 
-alert("Preview ended. Buy the full song to unlock the complete track.");
+player.onended=()=>{
+
+if(players[index+1]){
+
+players[index+1].play();
+
 }
 
-}
+};
 
+});
+
+});
 </script>
-
 </body>
 </html>
