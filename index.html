@@ -180,9 +180,10 @@ style="width:60px;height:60px;border-radius:6px;object-fit:cover;">
 
 </div>
 
-<button onclick="playSong('${song.demo}','${song.title}',this)">
-🎧
+<button onclick="toggleSong('${song.demo}','${song.title}',this)">
+▶
 </button>
+
 
 </div>
 
@@ -275,43 +276,62 @@ gap:10px;
 
 <div id="nowPlaying" style="flex:1">No song playing</div>
 
+<span id="timeDisplay">0:00 / 0:00</span>
+
+<input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1">
+
 <audio id="mainPlayer" controls style="width:200px"></audio>
 
 </div>
 
 <script>
 
-function playSong(src,title,btn){
+function toggleSong(src,title,btn){
 
 const player = document.getElementById("mainPlayer");
 
-/* reset all songs */
+const songRow = btn.closest(".song");
+
+if(player.src.includes(src) && !player.paused){
+
+player.pause();
+btn.innerHTML = "▶";
+return;
+
+}
+
+/* reset songs */
 document.querySelectorAll(".song").forEach(song=>{
 song.classList.remove("playing");
 
 const bar = song.querySelector(".progressBar");
-if(bar) bar.style.width = "0%";
+if(bar) bar.style.width="0%";
+
+const b = song.querySelector("button");
+if(b) b.innerHTML="▶";
+
 });
 
-/* activate current song */
-const songRow = btn.closest(".song");
+/* activate row */
 songRow.classList.add("playing");
 
-/* play audio */
+btn.innerHTML="⏸";
+
 player.src = src;
 player.play();
 
 document.getElementById("nowPlaying").innerText =
 "Now Playing: " + title;
 
-/* update progress bar */
 player.ontimeupdate = function(){
 
 let progress = player.duration ?
-(player.currentTime / player.duration) * 100 : 0;
+(player.currentTime / player.duration)*100 : 0;
 
 songRow.querySelector(".progressBar").style.width =
 progress + "%";
+
+updateTime();
 
 };
 
@@ -333,6 +353,36 @@ const percent = clickX / width;
 player.currentTime = percent * player.duration;
 
 }
+function updateTime(){
+
+const player = document.getElementById("mainPlayer");
+
+const current = formatTime(player.currentTime);
+const duration = formatTime(player.duration);
+
+document.getElementById("timeDisplay").innerText =
+current + " / " + duration;
+
+}
+
+function formatTime(sec){
+
+if(!sec) return "0:00";
+
+let m = Math.floor(sec/60);
+let s = Math.floor(sec%60);
+
+if(s<10) s="0"+s;
+
+return m+":"+s;
+
+}
+const volumeSlider = document.getElementById("volumeSlider");
+
+volumeSlider.addEventListener("input",()=>{
+document.getElementById("mainPlayer").volume = volumeSlider.value;
+});
+
 
 </script>
 
