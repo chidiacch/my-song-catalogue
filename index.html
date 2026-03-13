@@ -172,9 +172,10 @@ style="width:60px;height:60px;border-radius:6px;object-fit:cover;">
 <b>${song.title}</b><br>
 <span style="color:#aaa">${song.style}</span>
 
-<div class="progress">
+<div class="progress" onclick="seekSong(event,this)">
 <div class="progressBar"></div>
 </div>
+
 
 </div>
 
@@ -312,6 +313,23 @@ songRow.querySelector(".progressBar").style.width =
 progress + "%";
 
 };
+
+}
+function seekSong(event,progressElement){
+
+const player = document.getElementById("mainPlayer");
+
+if(!player.duration) return;
+
+const rect = progressElement.getBoundingClientRect();
+
+const clickX = event.clientX - rect.left;
+
+const width = rect.width;
+
+const percent = clickX / width;
+
+player.currentTime = percent * player.duration;
 
 }
 
