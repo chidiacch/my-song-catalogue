@@ -44,18 +44,23 @@ margin:5px;
 }
 
 .container{
-width:90%;
+width:100%;
+max-width:700px;
 margin:auto;
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-gap:20px;
+display:flex;
+flex-direction:column;
+gap:10px;
+padding:10px;
+padding-bottom:80px;
 }
 
 .song{
-background:#1c1c1c;
-padding:20px;
-border-radius:10px;
-transition:0.3s;
+display:flex;
+align-items:center;
+gap:15px;
+background:#181818;
+padding:12px;
+border-radius:8px;
 }
 
 .song:hover{
@@ -64,15 +69,10 @@ transform:scale(1.03);
 }
 
 button{
-background:#25D366;
+background:none;
 border:none;
-padding:12px 25px;
-color:white;
-font-size:16px;
+font-size:22px;
 cursor:pointer;
-border-radius:30px;
-font-weight:bold;
-margin-top:10px;
 }
 
 audio{
@@ -143,34 +143,22 @@ songs.forEach(song=>{
 const cover = song.cover ? song.cover : "covers/default.jpg";
 
 const html = `
+
 <div class="song">
 
 <img src="${cover}" 
-style="width:100%;border-radius:10px;margin-bottom:10px;">
+style="width:60px;height:60px;border-radius:6px;object-fit:cover;">
 
-<h2>${song.title}</h2>
+<div style="flex:1">
 
-<p><b>Style:</b> ${song.style}</p>
-<p><b>Mood:</b> ${song.mood}</p>
-<p><b>Price:</b> ${song.price}</p>
+<b>${song.title}</b><br>
+<span style="color:#aaa">${song.style}</span>
 
-<audio class="player"
-controls controlsList="nodownload"
-ontimeupdate="limitPreview(this)">
-<source src="${song.demo}" type="audio/mpeg">
-</audio>
+</div>
 
-<br>
-
-<button onclick="showLyrics('${song.title}','${song.lyrics || ""}')">
-View Lyrics
+<button onclick="playSong('${song.demo}','${song.title}')">
+🎧
 </button>
-
-<br>
-
-<a href="https://wa.me/96170333029?text=Hello I want to buy the song ${song.title}">
-<button>Buy / Contact</button>
-</a>
 
 </div>
 
@@ -246,29 +234,41 @@ document.getElementById("lyricsModal").style.display="none";
 }
 
 </script>
+
+<div id="playerBar"
+style="
+position:fixed;
+bottom:0;
+left:0;
+width:100%;
+background:#000;
+padding:10px;
+display:flex;
+align-items:center;
+gap:10px;
+">
+
+<div id="nowPlaying" style="flex:1">No song playing</div>
+
+<audio id="mainPlayer" controls style="width:200px"></audio>
+
+</div>
+
 <script>
 
-let players=[];
+function playSong(src,title){
 
-document.addEventListener("DOMContentLoaded",()=>{
+const player=document.getElementById("mainPlayer");
 
-const players=document.querySelectorAll(".player");
+player.src=src;
+player.play();
 
-players.forEach((player,index)=>{
-
-player.onended=()=>{
-
-if(players[index+1]){
-
-players[index+1].play();
+document.getElementById("nowPlaying").innerText =
+"Now Playing: " + title;
 
 }
 
-};
-
-});
-
-});
 </script>
+
 </body>
 </html>
