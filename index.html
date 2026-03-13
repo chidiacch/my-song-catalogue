@@ -6,6 +6,24 @@
 <title>Charbel Song Catalog</title>
 
 <style>
+.progress{
+height:4px;
+background:#333;
+border-radius:2px;
+margin-top:5px;
+overflow:hidden;
+}
+
+.progressBar{
+height:100%;
+width:0%;
+background:#25D366;
+transition:width 0.2s;
+}
+
+.song.playing{
+background:#2a2a2a;
+}
 
 body{
 font-family:Arial;
@@ -154,15 +172,20 @@ style="width:60px;height:60px;border-radius:6px;object-fit:cover;">
 <b>${song.title}</b><br>
 <span style="color:#aaa">${song.style}</span>
 
+<div class="progress">
+<div class="progressBar"></div>
 </div>
 
-<button onclick="playSong('${song.demo}','${song.title}')">
+</div>
+
+<button onclick="playSong('${song.demo}','${song.title}',this)">
 🎧
 </button>
 
 </div>
 
 `;
+
 container.innerHTML+=html;
 
 });
@@ -256,15 +279,39 @@ gap:10px;
 
 <script>
 
-function playSong(src,title){
+function playSong(src,title,btn){
 
-const player=document.getElementById("mainPlayer");
+const player = document.getElementById("mainPlayer");
 
-player.src=src;
+/* reset all songs */
+document.querySelectorAll(".song").forEach(song=>{
+song.classList.remove("playing");
+
+const bar = song.querySelector(".progressBar");
+if(bar) bar.style.width = "0%";
+});
+
+/* activate current song */
+const songRow = btn.closest(".song");
+songRow.classList.add("playing");
+
+/* play audio */
+player.src = src;
 player.play();
 
 document.getElementById("nowPlaying").innerText =
 "Now Playing: " + title;
+
+/* update progress bar */
+player.ontimeupdate = function(){
+
+let progress = player.duration ?
+(player.currentTime / player.duration) * 100 : 0;
+
+songRow.querySelector(".progressBar").style.width =
+progress + "%";
+
+};
 
 }
 
